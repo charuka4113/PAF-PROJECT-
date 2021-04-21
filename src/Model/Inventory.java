@@ -2,6 +2,8 @@ package Model;
 
 public class Inventory {
 	
+	//this is model
+	
 	private int productid;
 	private String productname;
 	private String description;

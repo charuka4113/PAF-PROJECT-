@@ -40,7 +40,7 @@ public class InventoryContraller {
 			 {return "Error while connecting to the database for reading."; } 
 		 
 			 // Prepare the html table to be displayed
-			 output = "<table border='1'><tr><th>User ProductID</th><th>ProductName</th><th>Description</th><th>Size</th><th>Price</th></tr>"; 
+			 output = "<table border='1'><tr><th>Software ProductID</th><th>Software ProductName</th><th>Software Description</th><th>Software Size</th><th>Software Price</th></tr>"; 
 		 
 			 String query = "select * from inventory"; 
 			 Statement stmt = con.createStatement(); 

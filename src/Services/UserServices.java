@@ -12,29 +12,28 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import Controller.UserAdminController;
 import Controller.UserController;
 import Controller.ValidateUser;
 import Model.Users;
 
-@Path("/UserManagement") 
+@Path("/UserManagementService") 
 public class UserServices {
 	
-	UserAdminController userAdmin = new UserAdminController();
+	
 	ValidateUser userValidate = new ValidateUser();
 	UserController userController = new UserController();
 
 	@GET
-	@Path("/getUsers") 
+	@Path("/readUsers") 
 	@Produces(MediaType.TEXT_HTML) 
 	public String readUser() 
 	{ 
-		return userAdmin.readUser(); 
+		return userController.readUsers(); 
 	} 
 	
 	
 	@POST
-	@Path("/RegisterUser") 
+	@Path("/AddUser") 
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String userRegister(String userData) 
@@ -47,14 +46,14 @@ public class UserServices {
 		 int age = userObject.get("age").getAsInt(); 
 		 String pnumber = userObject.get("pnumber").getAsString();
 		 String address = userObject.get("address").getAsString();
-		 String type = userObject.get("type").getAsString();
+		 String email = userObject.get("email").getAsString();
 		 String password = userObject.get("password").getAsString(); 
-		 
-		 Users user= new Users(fname,lname,age,pnumber,address,password,type);
+		 String category = userObject.get("category").getAsString();
+
 		 
 
-		//String output = us.insertItem(fname,lname,age,pnumber,address,password);
-		 String output = userController.userRegister(user);
+		 
+		 String output = userController.addUser(fname, lname, age, pnumber, address, email, password, category);
 	return output; 
 	}
 	

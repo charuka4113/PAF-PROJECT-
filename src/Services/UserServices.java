@@ -13,14 +13,11 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import Controller.UserController;
-import Controller.ValidateUser;
-import Model.Users;
+
 
 @Path("/UserManagementService") 
 public class UserServices {
 	
-	
-	ValidateUser userValidate = new ValidateUser();
 	UserController userController = new UserController();
 
 	@GET
@@ -58,7 +55,7 @@ public class UserServices {
 	}
 	
 	@PUT
-	@Path("/UpdateUser") 
+	@Path("/editUser") 
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String updateUser(String userData) 
@@ -69,14 +66,16 @@ public class UserServices {
 	 String userid = userObject.get("userid").getAsString(); 
 	 String fname = userObject.get("fname").getAsString(); 
 	 String lname = userObject.get("lname").getAsString(); 
-	 String age = userObject.get("age").getAsString(); 
+	 int age = userObject.get("age").getAsInt(); 
 	 String pnumber = userObject.get("pnumber").getAsString();
 	 String address = userObject.get("address").getAsString(); 
-	 String type = userObject.get("type").getAsString();
+	 String email = userObject.get("email").getAsString(); 
 	 String password = userObject.get("password").getAsString(); 
+	 String category = userObject.get("category").getAsString();
 
-	 String output = userController.updateUser(userid, fname, lname, age, pnumber, address, password,type);
-	return output; 
+	 String output = userController.editUser(userid, fname, lname, age, pnumber, address, email, password, category);
+	 
+	return output;
 	}
 
 	
@@ -96,46 +95,6 @@ public class UserServices {
 	return output; 
 	}
 
-	@GET
-	@Path("/ValidateUser") 
-	@Consumes(MediaType.APPLICATION_JSON) 
-	@Produces(MediaType.TEXT_HTML) 
-	public String validateUser(String userData) 
-	{ 
-	
-		JsonObject userObject = new JsonParser().parse(userData).getAsJsonObject(); 
-		 
-		//Read the value from the element <itemID>
-		 String username = userObject.get("username").getAsString();
-		 String password = userObject.get("password").getAsString();
-		
-		 String output = userValidate.validateUser(username, password);
-		 
-
-		
-		return output;
-	} 
-	
-	@GET
-	@Path("/Login") 
-	@Consumes(MediaType.APPLICATION_JSON) 
-	@Produces(MediaType.TEXT_HTML) 
-	public String userLogin(String userData) 
-	{ 
-	
-		JsonObject userObject = new JsonParser().parse(userData).getAsJsonObject(); 
-		 
-		//Read the value from the element <itemID>
-		 String username = userObject.get("username").getAsString();
-		 String password = userObject.get("password").getAsString();
-		
-		 String output = userValidate.validateUser(username, password);
-		 
-
-		
-		return output;
-	} 
-	
 	
 
 }

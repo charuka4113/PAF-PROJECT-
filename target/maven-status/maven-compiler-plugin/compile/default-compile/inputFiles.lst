@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\94728\git\PAF-PROJECT-\src\Controller\UserAdminController.java
 C:\Users\94728\git\PAF-PROJECT-\src\Controller\ValidateUser.java
 C:\Users\94728\git\PAF-PROJECT-\src\Model\Inventory.java
@@ -8,3 +9,26 @@ C:\Users\94728\git\PAF-PROJECT-\src\Controller\UserController.java
 C:\Users\94728\git\PAF-PROJECT-\src\Controller\Cart.java
 C:\Users\94728\git\PAF-PROJECT-\src\Controller\InventoryContraller.java
 C:\Users\94728\git\PAF-PROJECT-\src\Services\PaymentServices.java
+=======
+<<<<<<< HEAD
+C:\Users\94728\git\PAF-PROJECT-\src\Controller\UserAdminController.java
+C:\Users\94728\git\PAF-PROJECT-\src\Controller\ValidateUser.java
+C:\Users\94728\git\PAF-PROJECT-\src\Model\Inventory.java
+C:\Users\94728\git\PAF-PROJECT-\src\Model\Users.java
+C:\Users\94728\git\PAF-PROJECT-\src\Services\InventoryService.java
+C:\Users\94728\git\PAF-PROJECT-\src\Services\UserServices.java
+C:\Users\94728\git\PAF-PROJECT-\src\Controller\UserController.java
+C:\Users\94728\git\PAF-PROJECT-\src\Controller\Cart.java
+C:\Users\94728\git\PAF-PROJECT-\src\Controller\InventoryContraller.java
+C:\Users\94728\git\PAF-PROJECT-\src\Services\PaymentServices.java
+=======
+C:\Users\janith\git\PAF-PROJECT-\src\Services\UserServices.java
+C:\Users\janith\git\PAF-PROJECT-\src\Controller\ValidateUser.java
+C:\Users\janith\git\PAF-PROJECT-\src\Services\PaymentServices.java
+C:\Users\janith\git\PAF-PROJECT-\src\Controller\InventoryContraller.java
+C:\Users\janith\git\PAF-PROJECT-\src\Model\Inventory.java
+C:\Users\janith\git\PAF-PROJECT-\src\Model\Users.java
+C:\Users\janith\git\PAF-PROJECT-\src\Controller\UserController.java
+C:\Users\janith\git\PAF-PROJECT-\src\Services\InventoryService.java
+>>>>>>> refs/remotes/origin/master
+>>>>>>> refs/remotes/origin/master

@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 
 
-public class UserController {
+public class PaymentController {
 	
 	private Connection connect() 
 	{ 
@@ -18,14 +18,14 @@ public class UserController {
 			Class.forName("com.mysql.jdbc.Driver"); 
  
 			//Provide the correct details: DBServer/DBName, username, password 
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/pafprojtest", "root", "root"); 
+			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/pafprojtest?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root",""); 
 		} 
 		catch (Exception e) 
 		{e.printStackTrace();} 
 		return con; 
 	} 
 	
-	public String readUsers() 
+	public String readPayment() 
 	{ 
 		 String output = ""; 
 		 
@@ -37,37 +37,32 @@ public class UserController {
 			 {return "Error while connecting to the database for reading."; } 
 		 
 			 // Prepare the html table to be displayed
-			 output = "<table border='1'><tr><th>User ID</th><th>Name</th><th>Age</th><th>Phone Number</th><th>Address</th><th>Email</th><th>Password</th><th>Category</th></tr>"; 
+			 output = "<table border='1'><tr><th>Pay ID</th><th>Pay Date</th><th>Description</th><th>Price</th><th>Type</th>"; 
 		 
-			 String query = "select * from user"; 
+			 String query = "select * from payment"; 
 			 Statement stmt = con.createStatement(); 
 			 ResultSet rs = stmt.executeQuery(query); 
 		 
 			 // iterate through the rows in the result set
 			 while (rs.next()) 
 			 { 
-				 int userid = rs.getInt("userid");
-				 String fname = rs.getString("fname");
-				 String lname = rs.getString("lname"); 
-				 int age = rs.getInt("age");
-				 String pnumber = rs.getString("pnumber");
-				 String address = rs.getString("address");
-				 String email = rs.getString("email");
-				 String password = rs.getString("password");
-				 String category = rs.getString("category");
+				 int payid = rs.getInt("payid");
+				 String paydate = rs.getString("paydate");
+				 String description = rs.getString("description"); 
+				 int price = rs.getInt("price");
+				 String type = rs.getString("type");
+				 
 				 // Add into the html table
-				 output += "<tr><td>" + userid + "</td>"; 
-				 output += "<td>" + fname+lname + "</td>"; 
-				 output += "<td>" + age + "</td>"; 
-				 output += "<td>" + pnumber + "</td>"; 
-				 output += "<td>" + address + "</td>"; 
-				 output += "<td>" + email + "</td>"; 
-				 output += "<td>" + password + "</td>"; 
-				 output += "<td>" + category + "</td>"; 
+				 output += "<tr><td>" + payid + "</td>"; 
+				 output += "<td>" + paydate + "</td>"; 
+				 output += "<td>" + description + "</td>"; 
+				 output += "<td>" + price + "</td>"; 
+				 output += "<td>" + type + "</td>"; 
+				  
 				 // buttons
 				 output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
 						+ "<td><input name='btnDelete' type='submit' value='Delete' class='btn btn-danger'></td>"
-						+ "<input name='userid' type='hidden' value='" + userid 
+						+ "<input name='payid' type='hidden' value='" + payid 
 						+ "'>" + "</form></td></tr>"; 
 		 } 
 		 
@@ -83,8 +78,9 @@ public class UserController {
 	} 
 		 return output; 
 } 
+
 	
-	public String addUser(String fname, String lname,int age, String pnumber, String address,String email,String password,String category) 
+	public String InsertPayment(String paydate, String description, int price, String type) 
 	{ 
 		String output = ""; 
 	
@@ -95,27 +91,23 @@ public class UserController {
 			{return "Error while connecting to the database for inserting."; } 
  
 			// create a prepared statement
-			String query = " insert into pafprojtest.user (`userid`,`fname`,`lname`,`age`,`pnumber`,`address`,`email`,`password`,`category`)"
-					+ " values (?,?,?,?,?,?,?,?,?)"; 
+			String query = " insert into pafprojtest.payment (`payid`,`paydate`,`description`,`price`,`type`)"
+					+ " values (?,?,?,?,?)"; 
  
 			PreparedStatement preparedStmt = con.prepareStatement(query); 
 
 			// binding values
 			
-			preparedStmt.setInt(1, 0); 
-			preparedStmt.setString(2, fname); 
-			preparedStmt.setString(3, lname); 
-			preparedStmt.setInt(4, age);
-			preparedStmt.setString(5, pnumber);
-			preparedStmt.setString(6, address);
-			preparedStmt.setString(7, email);
-			preparedStmt.setString(8, password);
-			preparedStmt.setString(9, category);
-			// execute the statement
+			preparedStmt.setInt(1, 3); 
+			preparedStmt.setString(2, paydate); 
+			preparedStmt.setString(3, description); 
+			preparedStmt.setInt(4, price);
+			preparedStmt.setString(5, type);
+			
 			preparedStmt.execute(); 
 			 con.close(); 
 			 
-			 output = "User Added Successfully!"; 
+			 output = "Inserted successfully"; 
 		} 
 		catch (Exception e) 
 		{ 
@@ -126,7 +118,8 @@ public class UserController {
 		return output; 
 	}
 	
-	public String editUser(String userid, String fname, String lname, int age, String pnumber, String address,String email,String password,String category)
+
+	public String updatePayment(String payid,String paydate, String description, String price, String type)
 	{ 
 		 String output = ""; 
 		 try
@@ -137,25 +130,22 @@ public class UserController {
 			 	{return "Error while connecting to the database for updating."; } 
 		 
 			 	// create a prepared statement
-			 	String query = "UPDATE user SET fname=?,lname=?,age=?,pnumber=?,address=?,email=?,password=?,category=? WHERE userid =?"; 
+			 	String query = "UPDATE payment SET paydate=?,description=?,price=?,type=? WHERE payid =?"; 
 		 
 			 	PreparedStatement preparedStmt = con.prepareStatement(query); 
 		 
 			 	// binding values
-			 	preparedStmt.setString(1, fname); 
-			 	preparedStmt.setString(2, lname); 
-			 	preparedStmt.setInt(3, age); 
-			 	preparedStmt.setString(4, pnumber); 
-			 	preparedStmt.setString(5, address); 
-			 	preparedStmt.setString(6, email); 
-			 	preparedStmt.setString(7, password); 
-			 	preparedStmt.setString(8, category); 
-			 	preparedStmt.setInt(9, Integer.parseInt(userid)); 
+			 	preparedStmt.setString(1, paydate); 
+			 	preparedStmt.setString(2, description); 
+			 	preparedStmt.setInt(3, Integer.parseInt(price)); 
+			 	preparedStmt.setString(4, type); 
+			 	
+			 	preparedStmt.setInt(5, Integer.parseInt(payid)); 
 			
 			 	// execute the statement
 			 	preparedStmt.execute(); 
 			 	con.close(); 
-			 	output = "User has been Edited successfully"; 
+			 	output = "Updated successfully"; 
 		 } 
 		 catch (Exception e) 
 		 { 
@@ -167,7 +157,7 @@ public class UserController {
 		 
 	}
 	
-	public String deleteUser(String userid) 
+	public String deletePayment(String payid) 
 	 { 
 		String output = ""; 
 	 
@@ -178,13 +168,13 @@ public class UserController {
 			{return "Error while connecting to the database for deleting."; } 
 	 
 			// create a prepared statement
-			String query = "delete from user where userid=?"; 
+			String query = "delete from payment where payid=?"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query); 
 			
 			
 	 
 			// binding values
-			preparedStmt.setInt(1, Integer.parseInt(userid)); 
+			preparedStmt.setInt(1, Integer.parseInt(payid)); 
 	 
 			// execute the statement
 			preparedStmt.execute(); 
@@ -201,5 +191,4 @@ public class UserController {
 	 return output;
 	 
 	 } 
-
 }

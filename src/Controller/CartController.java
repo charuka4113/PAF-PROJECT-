@@ -6,9 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-
-
-public class PaymentController {
+public class CartController {
 	
 	private Connection connect() 
 	{ 
@@ -25,7 +23,7 @@ public class PaymentController {
 		return con; 
 	} 
 	
-	public String readPayment() 
+	public String readCart() 
 	{ 
 		 String output = ""; 
 		 
@@ -37,32 +35,34 @@ public class PaymentController {
 			 {return "Error while connecting to the database for reading."; } 
 		 
 			 // Prepare the html table to be displayed
-			 output = "<table border='1'><tr><th>Pay ID</th><th>Pay Date</th><th>Description</th><th>Price</th><th>Type</th>"; 
+			 output = "<table border='1'><tr><th>Cart ID</th><th>Product Name</th><th>Description</th><th>Size</th><th>Price</th><th>Type</th></tr>"; 
 		 
-			 String query = "select * from payment"; 
+			 String query = "select * from cart"; 
 			 Statement stmt = con.createStatement(); 
 			 ResultSet rs = stmt.executeQuery(query); 
 		 
 			 // iterate through the rows in the result set
 			 while (rs.next()) 
 			 { 
-				 int payid = rs.getInt("payid");
-				 String paydate = rs.getString("paydate");
+				 int cartid = rs.getInt("cartid");
+				 String productname = rs.getString("productname");
 				 String description = rs.getString("description"); 
+				 String size = rs.getString("size");
 				 int price = rs.getInt("price");
 				 String type = rs.getString("type");
-				 
+				
 				 // Add into the html table
-				 output += "<tr><td>" + payid + "</td>"; 
-				 output += "<td>" + paydate + "</td>"; 
+				 output += "<tr><td>" + cartid + "</td>"; 
+				 output += "<td>" + productname + "</td>"; 
 				 output += "<td>" + description + "</td>"; 
+				 output += "<td>" + size + "</td>"; 
 				 output += "<td>" + price + "</td>"; 
 				 output += "<td>" + type + "</td>"; 
-				  
+				 
 				 // buttons
 				 output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
 						+ "<td><input name='btnDelete' type='submit' value='Delete' class='btn btn-danger'></td>"
-						+ "<input name='payid' type='hidden' value='" + payid 
+						+ "<input name='userid' type='hidden' value='" + cartid 
 						+ "'>" + "</form></td></tr>"; 
 		 } 
 		 
@@ -77,10 +77,9 @@ public class PaymentController {
 		 System.err.println(e.getMessage()); 
 	} 
 		 return output; 
-} 
+	} 
 
-	
-	public String InsertPayment(String paydate, String description, int price, String type) 
+	public String InsertProducts( String productname, String description, String size, int price, String type) 
 	{ 
 		String output = ""; 
 	
@@ -91,19 +90,21 @@ public class PaymentController {
 			{return "Error while connecting to the database for inserting."; } 
  
 			// create a prepared statement
-			String query = " insert into pafprojtest.payment (`payid`,`paydate`,`description`,`price`,`type`)"
-					+ " values (?,?,?,?,?)"; 
+			String query = " insert into pafprojtest.cart (`cartid`,`productname`,`description`,`size`,`price`,`type`)"
+					+ " values (?,?,?,?,?,?)"; 
  
 			PreparedStatement preparedStmt = con.prepareStatement(query); 
 
 			// binding values
 			
-			preparedStmt.setInt(1, 3); 
-			preparedStmt.setString(2, paydate); 
-			preparedStmt.setString(3, description); 
-			preparedStmt.setInt(4, price);
-			preparedStmt.setString(5, type);
+			preparedStmt.setInt(1, 0); 
+			preparedStmt.setString(2, productname); 
+			preparedStmt.setString(3, description ); 
+			preparedStmt.setString(4,size);
+			preparedStmt.setInt(5, price);
+			preparedStmt.setString(6, type);
 			
+			// execute the statement
 			preparedStmt.execute(); 
 			 con.close(); 
 			 
@@ -118,8 +119,7 @@ public class PaymentController {
 		return output; 
 	}
 	
-
-	public String updatePayment(String payid,String paydate, String description, String price, String type)
+	public String updateInventory(String cartid,String productname, String description, String size, String price, String type)
 	{ 
 		 String output = ""; 
 		 try
@@ -130,17 +130,18 @@ public class PaymentController {
 			 	{return "Error while connecting to the database for updating."; } 
 		 
 			 	// create a prepared statement
-			 	String query = "UPDATE payment SET paydate=?,description=?,price=?,type=? WHERE payid =?"; 
+			 	String query = "UPDATE cart SET  productname=?,description=?,size=?,price=?,type=? WHERE cartid =?"; 
 		 
 			 	PreparedStatement preparedStmt = con.prepareStatement(query); 
 		 
 			 	// binding values
-			 	preparedStmt.setString(1, paydate); 
+			 	preparedStmt.setString(1, productname); 
 			 	preparedStmt.setString(2, description); 
-			 	preparedStmt.setInt(3, Integer.parseInt(price)); 
-			 	preparedStmt.setString(4, type); 
-			 	
-			 	preparedStmt.setInt(5, Integer.parseInt(payid)); 
+			 	preparedStmt.setString(3, size); 
+			 	preparedStmt.setInt(4, Integer.parseInt(price)); 
+			 	preparedStmt.setString(5, type); 
+			 	preparedStmt.setInt(6, Integer.parseInt(cartid)); 
+			 	 
 			
 			 	// execute the statement
 			 	preparedStmt.execute(); 
@@ -157,7 +158,7 @@ public class PaymentController {
 		 
 	}
 	
-	public String deletePayment(String payid) 
+	public String delete(String cartid) 
 	 { 
 		String output = ""; 
 	 
@@ -168,13 +169,13 @@ public class PaymentController {
 			{return "Error while connecting to the database for deleting."; } 
 	 
 			// create a prepared statement
-			String query = "delete from payment where payid=?"; 
+			String query = "delete from cart where cartid=?"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query); 
 			
 			
 	 
 			// binding values
-			preparedStmt.setInt(1, Integer.parseInt(payid)); 
+			preparedStmt.setInt(1, Integer.parseInt(cartid)); 
 	 
 			// execute the statement
 			preparedStmt.execute(); 
@@ -191,4 +192,6 @@ public class PaymentController {
 	 return output;
 	 
 	 } 
+	
+
 }

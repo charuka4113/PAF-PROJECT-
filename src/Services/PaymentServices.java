@@ -1,6 +1,7 @@
 package Services;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -70,6 +71,22 @@ public class PaymentServices {
 	 ; 
 
 	 String output = payment.updatePayment(payid, paydate, description, price, type);
+	return output; 
+	}
+	
+	@DELETE
+	@Path("/DeletePayment") 
+	@Consumes(MediaType.APPLICATION_JSON) 
+	@Produces(MediaType.TEXT_PLAIN) 
+	public String deletePayment(String paymentData) 
+	{ 
+	//Convert the input string to a JSON object 
+	JsonObject paymentObject = new JsonParser().parse(paymentData).getAsJsonObject(); 
+	 
+	//Read the value from the element <itemID>
+	 String payid = paymentObject.get("payid").getAsString();
+	
+	 String output = payment.deletePayment(payid);
 	return output; 
 	}
 

@@ -77,7 +77,7 @@ public class UserServices {
 	 String password = userObject.get("password").getAsString(); 
 
 	 String output = userController.updateUser(userid, fname, lname, age, pnumber, address, password,type);
-	return output; 
+	return output;
 	}
 
 	

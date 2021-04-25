@@ -13,7 +13,7 @@ public class Users {
 	private String password;
 	private String category;
 
-
+ //constructor
 	public Users(int userid, String fname, String lname, int age, String pnumber, String address, String email,
 			String password, String category) {
 		super();
@@ -42,7 +42,7 @@ public class Users {
 		this.category = category;
 	}
 
-
+//getters and setters
 	public int getUserid() {
 		return userid;
 	}

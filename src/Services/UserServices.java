@@ -37,9 +37,11 @@ public class UserServices {
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String userRegister(String userData) 
 	{ 
-		//Convert the input string to a JSON object 
+		//Convert to a JSON object 
 		 JsonObject userObject = new JsonParser().parse(userData).getAsJsonObject(); 
-		//Read the values from the JSON object
+		
+		 
+		 //Read from the JSON object
 		 String fname = userObject.get("fname").getAsString(); 
 		 String lname = userObject.get("lname").getAsString(); 
 		 int age = userObject.get("age").getAsInt(); 
